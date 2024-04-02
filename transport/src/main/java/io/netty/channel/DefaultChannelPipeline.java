@@ -16,6 +16,7 @@
 package io.netty.channel;
 
 import io.netty.channel.Channel.Unsafe;
+import io.netty.util.LogUtil;
 import io.netty.util.ReferenceCountUtil;
 import io.netty.util.ResourceLeakDetector;
 import io.netty.util.concurrent.EventExecutor;
@@ -217,12 +218,14 @@ public class DefaultChannelPipeline implements ChannelPipeline {
                 executor.execute(new Runnable() {
                     @Override
                     public void run() {
+                        LogUtil.log("callHandlerAdded0 of " + newCtx.handler().toString());
                         callHandlerAdded0(newCtx);
                     }
                 });
                 return this;
             }
         }
+        LogUtil.log("callHandlerAdded0 of " + newCtx.handler().toString());
         callHandlerAdded0(newCtx);
         return this;
     }
@@ -1377,6 +1380,7 @@ public class DefaultChannelPipeline implements ChannelPipeline {
 
         @Override
         public void run() {
+            LogUtil.log("callHandlerAdded0 in PendingHandlerAddedTask");
             callHandlerAdded0(ctx);
         }
 
@@ -1384,6 +1388,7 @@ public class DefaultChannelPipeline implements ChannelPipeline {
         void execute() {
             EventExecutor executor = ctx.executor();
             if (executor.inEventLoop()) {
+                LogUtil.log("callHandlerAdded0 in PendingHandlerAddedTask");
                 callHandlerAdded0(ctx);
             } else {
                 try {

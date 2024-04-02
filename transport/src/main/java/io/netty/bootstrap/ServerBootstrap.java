@@ -28,6 +28,7 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.ServerChannel;
 import io.netty.util.AttributeKey;
+import io.netty.util.LogUtil;
 import io.netty.util.internal.logging.InternalLogger;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 
@@ -182,6 +183,7 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
                 ch.eventLoop().execute(new Runnable() {
                     @Override
                     public void run() {
+                        LogUtil.log("add ServerBootstrapAcceptor to pipeline");
                         pipeline.addLast(new ServerBootstrapAcceptor(
                                 currentChildGroup, currentChildHandler, currentChildOptions, currentChildAttrs));
                     }

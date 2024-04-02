@@ -29,6 +29,7 @@ import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.SelfSignedCertificate;
+import io.netty.util.AttributeKey;
 
 /**
  * Echoes back any received data from a client.
@@ -56,6 +57,9 @@ public final class EchoServer {
             b.group(bossGroup, workerGroup)
              .channel(NioServerSocketChannel.class)
              .option(ChannelOption.SO_BACKLOG, 100)
+             .attr(AttributeKey.newInstance("server.name"), "kingo")
+             .childOption(ChannelOption.SO_KEEPALIVE, true)
+             .childAttr(AttributeKey.newInstance("child.name"), "kingo-child")
              .handler(new LoggingHandler(LogLevel.INFO))
              .childHandler(new ChannelInitializer<SocketChannel>() {
                  @Override
